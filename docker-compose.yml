@@ -1,0 +1,19 @@
+version: '3'
+services:
+  maxmilhas-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: maxmilhas-backend
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '5'
+    working_dir: /usr/src/maxmilhas-backend
+    command: bash -c "npm run start"
+    restart: always
+    environment:
+      NODE_ENV: production
+    ports:
+      - 4000:4000

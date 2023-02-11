@@ -1,0 +1,26 @@
+version: '3'
+services:
+  maxmilhas-backend-development:
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    container_name: maxmilhas-backend-development
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '5'
+    working_dir: /usr/src/maxmilhas-backend
+    command: bash -c "npm run dev"
+    environment:
+      NODE_ENV: development
+    volumes:
+      - ./src:/usr/src/maxmilhas-backend/src
+      - ./prisma:/usr/src/maxmilhas-backend/prisma
+      - ./.env.development:/usr/src/maxmilhas-backend/.env.development
+      - ./.eslintrc.js:/usr/src/maxmilhas-backend/.eslintrc.js
+      - ./.eslintignore:/usr/src/maxmilhas-backend/.eslintignore
+      - ./.prettierrc.js:/usr/src/maxmilhas-backend/.prettierrc.js
+      - ./tsconfig.json:/usr/src/maxmilhas-backend/tsconfig.json
+    ports:
+      - 4000:4000
