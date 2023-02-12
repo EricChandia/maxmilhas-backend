@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "ttsc -p tsconfig.build.json",
-    "dev": "nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
+    "migration:run": "prisma migrate deploy",
+    "migration:dev": "dotenv -e .env.development prisma migrate dev",
+    "dev": "NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
     "start": "node dist/server.js",
     "start:docker": "docker-compose up",
     "dev:docker": "docker-compose -f docker-compose.development.yml --env-file .env.development up"
@@ -43,6 +45,7 @@
     "cors": "^2.8.5",
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
+    "dotenv-cli": "^7.0.0",
     "dotenv-expand": "^10.0.0",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1"

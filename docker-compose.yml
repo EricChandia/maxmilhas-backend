@@ -1,19 +1,37 @@
 version: '3'
 services:
-  maxmilhas-backend:
+  maxmilhas-postgres-production:
+    image: postgres:13-alpine
+    container_name: maxmilhas-postgres-production
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - 5433:${POSTGRES_PORT}
+    volumes:
+      - maxmilhas-postgres-data:/var/lib/postgresql/data
+    command: postgres -p ${POSTGRES_PORT}
+
+  maxmilhas-production:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: maxmilhas-backend
+    container_name: maxmilhas-production
+    depends_on:
+      - maxmilhas-postgres-production
     logging:
       driver: 'json-file'
       options:
         max-size: '10m'
         max-file: '5'
-    working_dir: /usr/src/maxmilhas-backend
-    command: bash -c "npm run start"
-    restart: always
+    working_dir: /usr/src/maxmilhas
+    command: bash -c "npx prisma generate && npx prisma migrate deploy && npm run start"
     environment:
       NODE_ENV: production
+      DATABASE_URL: ${DATABASE_URL}
     ports:
       - 4000:4000
+  
+volumes:
+  maxmilhas-postgres-data:

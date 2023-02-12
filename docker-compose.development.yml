@@ -1,26 +1,44 @@
 version: '3'
 services:
-  maxmilhas-backend-development:
+  maxmilhas-postgres-development:
+    image: postgres:13-alpine
+    container_name: maxmilhas-postgres-development
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    ports:
+      - 5366:${POSTGRES_PORT}
+    volumes:
+      - maxmilhas-postgres-data-dev:/var/lib/postgresql/data
+    command: postgres -p ${POSTGRES_PORT}
+
+  maxmilhas-development:
     build:
       context: .
       dockerfile: Dockerfile.development
-    container_name: maxmilhas-backend-development
+    container_name: maxmilhas-development
+    depends_on:
+      - maxmilhas-postgres-development
     logging:
       driver: 'json-file'
       options:
         max-size: '10m'
         max-file: '5'
-    working_dir: /usr/src/maxmilhas-backend
-    command: bash -c "npm run dev"
+    working_dir: /usr/src/maxmilhas
+    command: bash -c "npx prisma generate dev && npm run dev"
     environment:
       NODE_ENV: development
     volumes:
-      - ./src:/usr/src/maxmilhas-backend/src
-      - ./prisma:/usr/src/maxmilhas-backend/prisma
-      - ./.env.development:/usr/src/maxmilhas-backend/.env.development
-      - ./.eslintrc.js:/usr/src/maxmilhas-backend/.eslintrc.js
-      - ./.eslintignore:/usr/src/maxmilhas-backend/.eslintignore
-      - ./.prettierrc.js:/usr/src/maxmilhas-backend/.prettierrc.js
-      - ./tsconfig.json:/usr/src/maxmilhas-backend/tsconfig.json
+      - ./src:/usr/src/maxmilhas/src
+      - ./prisma:/usr/src/maxmilhas/prisma
+      - ./.env.development:/usr/src/maxmilhas/.env.development
+      - ./.eslintrc.js:/usr/src/maxmilhas/.eslintrc.js
+      - ./.eslintignore:/usr/src/maxmilhas/.eslintignore
+      - ./.prettierrc.js:/usr/src/maxmilhas/.prettierrc.js
+      - ./tsconfig.json:/usr/src/maxmilhas/tsconfig.json
     ports:
-      - 4000:4000
+      - 5000:5000
+  
+volumes:
+  maxmilhas-postgres-data-dev:
