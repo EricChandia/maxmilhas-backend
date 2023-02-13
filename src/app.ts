@@ -2,12 +2,16 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import 'express-async-errors';
 import { connectDb, disconnectDB } from '@/config';
+import router from './routes';
+import { handleApplicationErrors } from './middlewares/error-handling-middleware';
 
 const app = express();
 // eslint-disable-next-line prettier/prettier
 app
-    .use(cors)
-    .use(express.json());
+    .use(cors())
+    .use(express.json())
+    .use(router)
+    .use(handleApplicationErrors);
 
 export function init(): Promise<Express> {
   connectDb();
