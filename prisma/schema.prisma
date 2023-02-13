@@ -15,7 +15,7 @@ model Blacklist {
   id Int @id @default(autoincrement())
   cpf String @db.VarChar(11)
   createdAt DateTime @default(now())
-  deletedAt DateTime @updatedAt
+  removedAt DateTime? @db.Date
 
   @@map("blacklist")
 
