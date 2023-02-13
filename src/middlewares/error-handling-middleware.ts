@@ -9,18 +9,21 @@ export function handleApplicationErrors(
 ) {
   if (err.name === 'NotFoundCpfException') {
     return res.status(404).send({
+      type: err.name,
       message: err.message,
     });
   }
 
   if (err.name === 'InvalidCpfException') {
     return res.status(400).send({
+      type: err.name,
       message: err.message,
     });
   }
 
   if (err.name === 'ExistsCpfException') {
     return res.status(409).send({
+      type: err.name,
       message: err.message,
     });
   }
@@ -28,7 +31,7 @@ export function handleApplicationErrors(
   /* eslint-disable-next-line no-console */
   console.error(err);
   res.status(500).send({
-    error: 'InternalServerError',
+    type: 'InternalServerError',
     message: 'Internal Server Error',
   });
 }
