@@ -1,6 +1,6 @@
 import { Response, Request } from 'express';
 import blacklistService from '@/services/blacklistService';
-import { BlacklistedCpfWithoutId } from '@/types/blacklistType';
+import { BlacklistedCpf } from '@/types/blacklistTypes';
 
 export async function addCpfToBlacklist(req: Request, res: Response) {
   const { cpf }: { cpf: string } = req.body;
@@ -13,7 +13,7 @@ export async function addCpfToBlacklist(req: Request, res: Response) {
 export async function checkCpf(req: Request, res: Response) {
   const cpf: string = req.params.cpf;
 
-  const blacklistedCpfData: BlacklistedCpfWithoutId = await blacklistService.checkCpf(cpf);
+  const blacklistedCpfData: BlacklistedCpf = await blacklistService.checkCpf(cpf);
 
   res.status(200).send(blacklistedCpfData);
 }
@@ -27,7 +27,7 @@ export async function removeCpf(req: Request, res: Response) {
 }
 
 export async function findAllCpfs(req: Request, res: Response) {
-  const blacklistedCpfsList: BlacklistedCpfWithoutId[] = await blacklistService.findAllCpfs();
+  const blacklistedCpfsList: BlacklistedCpf[] = await blacklistService.findAllCpfs();
 
   res.status(200).send(blacklistedCpfsList);
 }

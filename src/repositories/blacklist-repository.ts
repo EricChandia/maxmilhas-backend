@@ -1,32 +1,35 @@
 import { prisma } from '@/config';
-import { BlacklistedCpf, BlacklistedCpfWithoutId, InsertBlacklistData } from '@/types/blacklistType';
+import { BlacklistedCpf, InsertBlacklistData } from '@/types/blacklistTypes';
 import { Blacklist } from '@prisma/client';
 
 export async function create(data: InsertBlacklistData): Promise<Blacklist> {
   return prisma.blacklist.create({ data });
 }
 
-export async function findById(id: number): Promise<Blacklist> {
-  return prisma.blacklist.findUnique({
-    where: { id },
+export async function findIdByCpf(cpf: string) {
+  const blacklistedCpf = await prisma.blacklist.findFirst({
+    where: { cpf, removedAt: null },
+    select: { id: true },
   });
+
+  return blacklistedCpf.id;
 }
 
 export async function findByCpf(cpf: string): Promise<BlacklistedCpf> {
-  return prisma.blacklist.findFirst({
+  return await prisma.blacklist.findFirst({
     where: { cpf, removedAt: null },
-    select: { id: true, cpf: true, createdAt: true },
+    select: { cpf: true, createdAt: true },
   });
 }
 
-export async function remove(id: number, removedAt: Date): Promise<BlacklistedCpf> {
+export async function remove(id: number, removedAt: Date): Promise<Blacklist> {
   return await prisma.blacklist.update({
     where: { id },
     data: { removedAt },
   });
 }
 
-export async function findAll(): Promise<BlacklistedCpfWithoutId[]> {
+export async function findAll(): Promise<BlacklistedCpf[]> {
   return await prisma.blacklist.findMany({
     where: { removedAt: null },
     select: { cpf: true, createdAt: true },
