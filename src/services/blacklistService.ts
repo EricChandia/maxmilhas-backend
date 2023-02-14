@@ -5,11 +5,11 @@ import { cpf as cpfValidator } from 'cpf-cnpj-validator';
 import { Blacklist } from '@prisma/client';
 
 async function addCpfToBlacklist(cpf: string): Promise<Blacklist> {
+  if (!cpfValidator.isValid(cpf)) throw InvalidCpfException();
+
   const cpfExists: BlacklistedCpf = await blacklistRepository.findByCpf(cpf);
 
   if (cpfExists) throw ExistsCpfException();
-
-  if (!cpfValidator.isValid(cpf)) throw InvalidCpfException();
 
   const insertBlacklistData: InsertBlacklistData = { cpf };
 
