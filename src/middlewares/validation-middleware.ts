@@ -1,4 +1,4 @@
-import { invalidDataError } from '@/errors';
+import { invalidDataError } from '@/utils';
 import { NextFunction, Request, Response } from 'express';
 import { ObjectSchema } from 'joi';
 
