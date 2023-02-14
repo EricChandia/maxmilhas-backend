@@ -1,6 +1,16 @@
+import { Blacklist } from '@prisma/client';
 import { cpf as cpfGenerator } from 'cpf-cnpj-validator';
+import { BlacklistedCpf } from '../../src/types/blacklistTypes';
 
-export function createCpf() {
-  const cpf = cpfGenerator.generate();
+export function createCpf(): string {
+  const cpf: string = cpfGenerator.generate();
   return cpf;
+}
+
+export function createBlacklistedCpf(): BlacklistedCpf {
+  return { cpf: createCpf(), createdAt: new Date() };
+}
+
+export function createBlacklist(): Blacklist {
+  return { id: 1, cpf: createCpf(), createdAt: new Date(), removedAt: null };
 }
