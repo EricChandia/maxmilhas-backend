@@ -17,7 +17,7 @@ export async function findIdByCpf(cpf: string) {
   return blacklistedCpf.id;
 }
 
-export async function findByCpf(cpf: string): Promise<BlacklistedCpf> {
+async function findByCpf(cpf: string): Promise<BlacklistedCpf> {
   return await prisma.blacklist.findFirst({
     where: { cpf, removedAt: null },
     select: { cpf: true, createdAt: true },

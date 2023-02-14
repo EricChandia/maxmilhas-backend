@@ -12,6 +12,7 @@
     "start:docker": "docker-compose up",
     "dev:docker": "docker-compose -f docker-compose.development.yml --env-file .env.development up",
     "test": "dotenv -e .env.test jest --no-cache",
+    "test:unit": "dotenv -e .env.test jest -- -i --coverage --testPathPattern=tests/unit",
     "test:migration": "dotenv -e .env.test npx prisma migrate dev"
   },
   "keywords": [],
