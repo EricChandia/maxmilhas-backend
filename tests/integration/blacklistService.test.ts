@@ -103,3 +103,45 @@ describe('Testes unitários da checkCpf', () => {
     expect(blacklistRepository.findByCpf).not.toBeCalled();
   });
 });
+
+describe('Testes unitários da removeCpf', () => {
+  it('Deve remover um cpf que existe na blacklist e retornar o código 200', async () => {
+    const cpf: string = createCpf();
+
+    jest.spyOn(blacklistRepository, 'findIdByCpf').mockResolvedValue(null);
+
+    const promise = blacklistService.removeCpf(cpf);
+
+    expect(promise).rejects.toEqual({
+      name: 'NotFoundCpfException',
+      message: 'This cpf does not exists.',
+    });
+    expect(blacklistRepository.findIdByCpf).toBeCalled();
+  });
+  it('Deve tentar remover um cpf que não existe na blacklist e retornar um erro do tipo "NotFoundCpfException"', async () => {
+    const cpf: string = createCpf();
+
+    jest.spyOn(blacklistRepository, 'findIdByCpf').mockResolvedValue(null);
+
+    const promise = blacklistService.removeCpf(cpf);
+
+    expect(promise).rejects.toEqual({
+      name: 'NotFoundCpfException',
+      message: 'This cpf does not exists.',
+    });
+    expect(blacklistRepository.findIdByCpf).toBeCalled();
+  });
+  it('Deve tentar remover um cpf inválido e receber um erro do tipo "InvalidCpfException".', async () => {
+    const cpf = '9999';
+
+    jest.spyOn(blacklistRepository, 'findIdByCpf').mockResolvedValue(null);
+
+    const promise = blacklistService.removeCpf('1');
+
+    expect(promise).rejects.toEqual({
+      name: 'InvalidCpfException',
+      message: 'CPF is not valid.',
+    });
+    expect(blacklistRepository.findIdByCpf).not.toBeCalled();
+  });
+});
