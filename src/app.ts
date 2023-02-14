@@ -13,7 +13,7 @@ app
     .use(router)
     .use(handleApplicationErrors);
 
-export function init(): Promise<Express> {
+export async function init(): Promise<Express> {
   connectDb();
   return Promise.resolve(app);
 }
