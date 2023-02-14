@@ -15,7 +15,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-describe('Testes unitários da blacklistService', () => {
+describe('Testes unitários da addCpfToBlacklist', () => {
   it('Deve adicionar um cpf à blacklist', async () => {
     const cpf: string = createCpf();
 
@@ -32,7 +32,7 @@ describe('Testes unitários da blacklistService', () => {
     expect(blacklistedCpf).toHaveProperty('removedAt');
   });
 
-  it('Deve tentar adicionar um cpf à blacklist mas receber um erro por já existir', async () => {
+  it('Deve tentar adicionar um cpf à já existente na blacklist e receber um erro do tipo "ExistsCpfException"', async () => {
     const blacklistedCpf: Blacklist = createBlacklist();
 
     jest.spyOn(blacklistRepository, 'findByCpf').mockResolvedValue(blacklistedCpf);
@@ -45,6 +45,21 @@ describe('Testes unitários da blacklistService', () => {
       message: 'This cpf already exists in blacklist.',
     });
     expect(blacklistRepository.findByCpf).toBeCalled();
+    expect(blacklistRepository.create).not.toBeCalled();
+  });
+  it('Deve tentar adicionar um cpf inválido à blacklist e receber um erro do tipo "InvalidCpfException".', async () => {
+    const blacklistedCpf: Blacklist = createBlacklist();
+
+    jest.spyOn(blacklistRepository, 'findByCpf').mockResolvedValue(null);
+    jest.spyOn(blacklistRepository, 'create').mockResolvedValue(blacklistedCpf);
+
+    const promise = blacklistService.addCpfToBlacklist('1');
+
+    expect(promise).rejects.toEqual({
+      name: 'InvalidCpfException',
+      message: 'CPF is not valid.',
+    });
+    expect(blacklistRepository.findByCpf).not.toBeCalled();
     expect(blacklistRepository.create).not.toBeCalled();
   });
 });
