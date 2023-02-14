@@ -1,6 +1,6 @@
 import { BlacklistedCpf, InsertBlacklistData } from '@/types/blacklistTypes';
 import * as blacklistRepository from '../repositories/blacklist-repository';
-import { InvalidCpfException, ExistsCpfException, NotFoundCpfException } from '@/errors';
+import { InvalidCpfException, ExistsCpfException, NotFoundCpfException } from '@/utils';
 import { cpf as cpfValidator } from 'cpf-cnpj-validator';
 import { Blacklist } from '@prisma/client';
 
@@ -42,6 +42,6 @@ async function findAllCpfs(): Promise<BlacklistedCpf[]> {
   return blacklitedCpfList;
 }
 
-const blacklistService = { addCpfToBlacklist, checkCpf, removeCpf, findAllCpfs };
+export const blacklistService = { addCpfToBlacklist, checkCpf, removeCpf, findAllCpfs };
 
-export default blacklistService;
+//export default blacklistService;

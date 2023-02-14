@@ -1,5 +1,5 @@
 import { Response, Request } from 'express';
-import blacklistService from '@/services/blacklistService';
+import { blacklistService } from '@/services/blacklistService';
 import { BlacklistedCpf } from '@/types/blacklistTypes';
 
 export async function addCpfToBlacklist(req: Request, res: Response) {

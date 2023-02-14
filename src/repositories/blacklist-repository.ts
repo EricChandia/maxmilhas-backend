@@ -12,6 +12,8 @@ export async function findIdByCpf(cpf: string) {
     select: { id: true },
   });
 
+  if (!blacklistedCpf) return null;
+
   return blacklistedCpf.id;
 }
 
@@ -35,3 +37,5 @@ export async function findAll(): Promise<BlacklistedCpf[]> {
     select: { cpf: true, createdAt: true },
   });
 }
+
+export const blacklistRepository = { create, findIdByCpf, findByCpf, remove, findAll };
