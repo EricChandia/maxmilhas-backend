@@ -8,16 +8,21 @@ Teste prático de back-end realizado para a Maxmilhas. Desenvolvimento de uma AP
 ## :computer:	 Tecnologias e Conceitos
 
 Back-end:
-- Node.js com express
+- Node.js com Express
 - TypeScript
+
 Banco de dados:
 - Postgres com Prisma
+
 Conceitos:
 - SOLID, Clean Code
+
 Devops:
 - Docker
+
 Organização: 
 - Eslint e prettier
+
 Testes:
 - Jest
 - Supertest
