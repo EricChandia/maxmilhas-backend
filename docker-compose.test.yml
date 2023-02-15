@@ -1,0 +1,38 @@
+version: '3'
+services:
+  maxmilhas-postgres-test:
+    image: postgres:14-alpine
+    container_name: maxmilhas-postgres-test
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '212121'
+      POSTGRES_DB: blacklist-db-test
+    ports:
+      - 5554:5432
+    volumes:
+      - maxmilhas-postgres-test-data:/var/lib/postgresql@14/data
+    command: postgres -p 5432
+
+  maxmilhas-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: maxmilhas-test
+    depends_on:
+      - maxmilhas-postgres-test
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '10m'
+        max-file: '5'
+    working_dir: /usr/src/maxmilhas
+    command: bash -c "npx prisma generate && npx prisma migrate deploy && npm test"
+    environment:
+      PORT: 4000
+      NODE_ENV: test
+      DATABASE_URL: postgresql://postgres:212121@maxmilhas-postgres-test:5432/blacklist-db-test?schema=public
+    ports:
+      - 5555:4000
+
+volumes:
+  maxmilhas-postgres-test-data:

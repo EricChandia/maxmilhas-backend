@@ -1,7 +1,7 @@
 {
   "name": "maxmilhas-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Desafio técnico de back-end da maxmilhas.",
   "main": "dist/server.js",
   "scripts": {
     "build": "ttsc -p tsconfig.build.json",
@@ -11,9 +11,12 @@
     "start": "node dist/server.js",
     "start:docker": "docker-compose up",
     "dev:docker": "docker-compose -f docker-compose.development.yml --env-file .env.development up",
-    "test": "dotenv -e .env.test jest --no-cache",
-    "test:unit": "dotenv -e .env.test jest -- -i --coverage",
-    "test:migration": "dotenv -e .env.test npx prisma migrate dev"
+    "test": "jest --no-cache",
+    "test:unit": "dotenv -e .env.test jest tests/unit",
+    "test:integration": "dotenv -e .env.test jest tests/integration",
+    "test:migration": "dotenv -e .env.test npx prisma migrate dev",
+    "test:docker": "docker-compose -f docker-compose.test.yml up",
+    "docker:down": "docker-compose down"
   },
   "keywords": [],
   "author": "",
