@@ -16,6 +16,7 @@ Conceitos:
 - SOLID, Clean Code
 Devops:
 - Docker
+Organização: Eslint e prettier
 Testes:
 - Jest
 - Supertest
