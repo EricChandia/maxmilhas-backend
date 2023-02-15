@@ -1,17 +1,17 @@
 version: '3'
 services:
   maxmilhas-postgres-production:
-    image: postgres:13-alpine
+    image: postgres:14-alpine
     container_name: maxmilhas-postgres-production
     environment:
-      POSTGRES_USER: ${POSTGRES_USERNAME}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: '212121'
+      POSTGRES_DB: blacklist-db
     ports:
-      - 5433:${POSTGRES_PORT}
+      - 5433:5432
     volumes:
-      - maxmilhas-postgres-data:/var/lib/postgresql/data
-    command: postgres -p ${POSTGRES_PORT}
+      - maxmilhas-postgres-data:/var/lib/postgresql@14/data
+    command: postgres -p 5432
 
   maxmilhas-production:
     build:
@@ -28,10 +28,11 @@ services:
     working_dir: /usr/src/maxmilhas
     command: bash -c "npx prisma generate && npx prisma migrate deploy && npm run start"
     environment:
+      PORT: 4000
       NODE_ENV: production
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgresql://postgres:212121@maxmilhas-postgres-production:5432/blacklist-db?schema=public
     ports:
       - 4000:4000
-  
+
 volumes:
   maxmilhas-postgres-data:
