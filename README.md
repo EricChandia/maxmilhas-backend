@@ -92,7 +92,7 @@ Finalizado o processo, a forma mais fácil de inicializar o projeto é com o Doc
 npm run start:docker
 ```
 
-Desta forma a aplicação rodará na porta 4000. O banco de dados será montado automáticamente com as migrations e estará rodando na porta 5433.
+Desta forma a aplicação rodará por padrão na porta 4000. O banco de dados será montado automáticamente com as migrations e estará rodando na porta 5433.
 
 
 ## 🔭 Testes
