@@ -84,7 +84,7 @@ Entrar na pasta raiz do projeto.
 Depois, dentro da pasta, rode o seguinte comando para instalar as dependencias.
 
 ```
-npm install
+npm i
 ```
 
 Finalizado o processo, a forma mais fácil de inicializar o projeto é com o Docker, para isso, rode o seguinte comando:
