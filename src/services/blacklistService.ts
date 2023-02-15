@@ -1,5 +1,5 @@
 import { BlacklistedCpf, InsertBlacklistData } from '@/types/blacklistTypes';
-import { blacklistRepository } from '../repositories/blacklist-repository';
+import { blacklistRepository } from '../repositories/blacklistRepository';
 import { InvalidCpfException, ExistsCpfException, NotFoundCpfException } from '@/utils';
 import { cpf as cpfValidator } from 'cpf-cnpj-validator';
 import { Blacklist } from '@prisma/client';

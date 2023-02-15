@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { addCpfToBlacklist, checkCpf, findAllCpfs, removeCpf } from '@/controllers/blacklistController';
-import { validateBody, validateParams } from '@/middlewares/validation-middleware';
+import { validateBody, validateParams } from '@/middlewares/validationMiddleware';
 import { cpfSchema } from '@/schemas/blacklistSchema';
 
 const blacklistRoute = Router();

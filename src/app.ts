@@ -3,7 +3,7 @@ import cors from 'cors';
 import 'express-async-errors';
 import { connectDb, disconnectDB } from '@/config';
 import router from './routes';
-import { handleApplicationErrors } from './middlewares/error-handling-middleware';
+import { handleApplicationErrors } from './middlewares/errorHandlerMiddleware';
 
 const app = express();
 // eslint-disable-next-line prettier/prettier
