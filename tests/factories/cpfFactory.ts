@@ -14,3 +14,13 @@ export function createBlacklistedCpf(): BlacklistedCpf {
 export function createBlacklist(): Blacklist {
   return { id: 1, cpf: createCpf(), createdAt: new Date(), removedAt: null };
 }
+
+export function createBlacklistedCpfList(): BlacklistedCpf[] {
+  const blacklistedCpfsList: BlacklistedCpf[] = [];
+
+  for (let i = 0; i < 10; i++) {
+    blacklistedCpfsList.push(createBlacklistedCpf());
+  }
+
+  return blacklistedCpfsList;
+}
