@@ -1,7 +1,7 @@
 import supertest from 'supertest';
 import app, { init } from '../../src/app';
 import { prisma } from '../../src/config/database';
-import * as cpfFactory from '../factories/cpfFactory';
+import { createCpf } from '../factories/cpfFactory';
 
 beforeAll(async () => {
   await init();
@@ -13,7 +13,7 @@ beforeEach(async () => {
 
 describe('POST /cpf', () => {
   it('Deve adicionar um cpf à blacklist e retornar o código 200', async () => {
-    const cpf = cpfFactory.createCpf();
+    const cpf = createCpf();
 
     const response = await supertest(app).post('/cpf').send({ cpf });
     expect(response.status).toBe(201);
@@ -25,7 +25,7 @@ describe('POST /cpf', () => {
     expect(response.status).toBe(400);
   });
   it('Deve tentar adicionar um cpf que já existe e retornar o código 409', async () => {
-    const cpf = cpfFactory.createCpf();
+    const cpf = createCpf();
 
     await supertest(app).post('/cpf').send({ cpf });
 
@@ -35,7 +35,7 @@ describe('POST /cpf', () => {
 
   describe('GET /cpf/:cpf', () => {
     it('Deve consultar um cpf já cadastrado, retornar o código 200 e um objeto com os dados do cpf', async () => {
-      const cpf = cpfFactory.createCpf();
+      const cpf = createCpf();
 
       await supertest(app).post('/cpf').send({ cpf });
 
@@ -46,7 +46,7 @@ describe('POST /cpf', () => {
       expect(response.body).toHaveProperty('createdAt');
     });
     it('Deve consultar um cpf não cadastrado e retornar o código 404', async () => {
-      const cpf = cpfFactory.createCpf();
+      const cpf = createCpf();
 
       const response = await supertest(app).get(`/cpf/${cpf}`).send();
       expect(response.status).toBe(404);
@@ -63,7 +63,7 @@ describe('POST /cpf', () => {
 
   describe('DELETE /cpf/:cpf', () => {
     it('Deve remover um cpf já cadastrado e retornar o código 200', async () => {
-      const cpf = cpfFactory.createCpf();
+      const cpf = createCpf();
       await supertest(app).post('/cpf').send({ cpf });
 
       const response = await supertest(app).delete(`/cpf/${cpf}`).send();
@@ -71,7 +71,7 @@ describe('POST /cpf', () => {
       expect(response.body).toBeInstanceOf(Object);
     });
     it('Deve tentar remover um cpf não cadastrado e retornar o código 404', async () => {
-      const cpf = cpfFactory.createCpf();
+      const cpf = createCpf();
       const response = await supertest(app).delete(`/cpf/${cpf}`).send();
 
       expect(response.status).toBe(404);
@@ -88,13 +88,13 @@ describe('POST /cpf', () => {
 
   describe('GET /cpf', () => {
     it('Deve retornar um array com todos os cpfs adicionados na blacklist e o código 200', async () => {
-      const cpf = cpfFactory.createCpf();
+      const cpf = createCpf();
       await supertest(app).post('/cpf').send({ cpf });
 
-      const cpf2 = cpfFactory.createCpf();
+      const cpf2 = createCpf();
       await supertest(app).post('/cpf').send({ cpf: cpf2 });
 
-      const cpf3 = cpfFactory.createCpf();
+      const cpf3 = createCpf();
       await supertest(app).post('/cpf').send({ cpf: cpf3 });
 
       const response = await supertest(app).get('/cpf').send();
