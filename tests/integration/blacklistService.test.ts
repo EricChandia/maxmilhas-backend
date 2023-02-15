@@ -1,7 +1,7 @@
 import { blacklistService } from '../../src/services/blacklistService';
 import { blacklistRepository } from '../../src/repositories/blacklist-repository';
 import { jest } from '@jest/globals';
-import { createCpf, createBlacklistedCpf, createBlacklist } from '../factories/cpfFactory';
+import { createCpf, createBlacklistedCpf, createBlacklist, createBlacklistedCpfList } from '../factories/cpfFactory';
 import { init } from '../../src/app';
 import { BlacklistedCpf } from '../../src/types/blacklistTypes';
 import { Blacklist } from '@prisma/client';
@@ -105,18 +105,16 @@ describe('Testes unitários da checkCpf', () => {
 });
 
 describe('Testes unitários da removeCpf', () => {
-  it('Deve remover um cpf que existe na blacklist e retornar o código 200', async () => {
-    const cpf: string = createCpf();
+  it('Deve remover um cpf que existe na blacklist', async () => {
+    const blacklist = createBlacklist();
 
-    jest.spyOn(blacklistRepository, 'findIdByCpf').mockResolvedValue(null);
+    jest.spyOn(blacklistRepository, 'findIdByCpf').mockResolvedValue(blacklist.id);
+    jest.spyOn(blacklistRepository, 'remove').mockResolvedValue(blacklist);
 
-    const promise = blacklistService.removeCpf(cpf);
+    await blacklistService.removeCpf(blacklist.cpf);
 
-    expect(promise).rejects.toEqual({
-      name: 'NotFoundCpfException',
-      message: 'This cpf does not exists.',
-    });
     expect(blacklistRepository.findIdByCpf).toBeCalled();
+    expect(blacklistRepository.remove).toBeCalled();
   });
   it('Deve tentar remover um cpf que não existe na blacklist e retornar um erro do tipo "NotFoundCpfException"', async () => {
     const cpf: string = createCpf();
@@ -143,5 +141,18 @@ describe('Testes unitários da removeCpf', () => {
       message: 'CPF is not valid.',
     });
     expect(blacklistRepository.findIdByCpf).not.toBeCalled();
+  });
+});
+
+describe('Testes unitários da findAllCpfs', () => {
+  it('Deve procurar e retornar um array com todos os cpfs já incluidos na blacklist', async () => {
+    const blacklistedCpfList: BlacklistedCpf[] = createBlacklistedCpfList();
+
+    jest.spyOn(blacklistRepository, 'findAll').mockResolvedValue(blacklistedCpfList);
+
+    const blacklistedCpfListData = await blacklistService.findAllCpfs();
+
+    expect(blacklistRepository.findAll).toBeCalled();
+    expect(blacklistedCpfListData).toBeInstanceOf(Array);
   });
 });
