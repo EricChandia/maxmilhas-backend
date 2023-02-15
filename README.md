@@ -17,7 +17,7 @@ Devops:
 - Docker
 
 Conceitos:
-- SOLID, Clean Code
+- SOLID, Clean Code, Layered architecture
 
 Organização: 
 - Eslint, Prettier
