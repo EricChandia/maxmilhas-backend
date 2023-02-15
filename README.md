@@ -11,7 +11,7 @@ Back-end:
 - Node.js com Express, TypeScript
 
 Banco de dados:
-- Postgres com Prisma
+- Postgresql com Prisma
 
 Devops:
 - Docker
