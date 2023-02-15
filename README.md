@@ -94,6 +94,11 @@ npm run start:docker
 
 Desta forma a aplicação rodará por padrão na porta 4000. O banco de dados será montado automáticamente com as migrations e estará rodando na porta 5433.
 
+Rode o comando abaixo quando quiser terminar a aplicação:
+
+```
+npm run docker:down
+```
 
 ## 🔭 Testes
 Esse projeto possui testes unitários e de integração, para rodar ambos a forma mais fácil também é com o Docker. Para isso, rode o seguinte comando na pasta raiz do projeto:
