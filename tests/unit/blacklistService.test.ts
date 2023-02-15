@@ -1,5 +1,5 @@
 import { blacklistService } from '../../src/services/blacklistService';
-import { blacklistRepository } from '../../src/repositories/blacklist-repository';
+import { blacklistRepository } from '../../src/repositories/blacklistRepository';
 import { jest } from '@jest/globals';
 import { createCpf, createBlacklistedCpf, createBlacklist, createBlacklistedCpfList } from '../factories/cpfFactory';
 import { init } from '../../src/app';
